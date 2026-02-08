@@ -1,0 +1,525 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager's Login - Elora</title>
+    
+    <style>
+        /* Reset default browser styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling with purple gradient background */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* White container card */
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Heading styling */
+        h1, h3 {
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        h3 {
+            font-size: 24px;
+        }
+
+        /* Form group container */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        /* Label styling */
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        /* Input field styling */
+        .input-field {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            font-weight: 400;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #7c3aed;
+        }
+
+        .input-field::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Password wrapper */
+        .password-wrapper {
+            position: relative;
+        }
+
+        /* Eye icon button */
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #6b7280;
+            font-size: 18px;
+        }
+
+        .toggle-password:hover {
+            color: #374151;
+        }
+
+        /* Button group */
+        .button-group {
+            margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Common button styling */
+        .btn {
+            width: 100%;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        /* Login button - coral/pink */
+        .btn-login,
+        .btn.primary {
+            background: #ff7b7b;
+            color: white;
+        }
+
+        .btn-login:hover,
+        .btn.primary:hover {
+            background: #ff6464;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 123, 123, 0.4);
+        }
+
+        .btn-login:disabled,
+        .btn.primary:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Signup button - light gray */
+        .btn-signup {
+            background: #e5e7eb;
+            color: #1a1a1a;
+        }
+
+        .btn-signup:hover {
+            background: #d1d5db;
+            transform: translateY(-2px);
+        }
+
+        /* Back button - dark gray */
+        .btn-back,
+        .btn.back {
+            background: #374151;
+            color: white;
+        }
+
+        .btn-back:hover,
+        .btn.back:hover {
+            background: #1f2937;
+            transform: translateY(-2px);
+        }
+
+        /* Option cards for dashboard */
+        .option-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-card:hover {
+            background: #f3f4f6;
+            border-color: #7c3aed;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
+        }
+
+        .option-card h4 {
+            font-size: 18px;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .option-card p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        /* Button click effect */
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Message box styling */
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+            display: block;
+        }
+
+        .message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            display: block;
+        }
+
+        .message.info {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+            display: block;
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #7c3aed;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Welcome text */
+        .welcome-text {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 32px;
+        }
+
+        .welcome-text strong {
+            color: #1a1a1a;
+        }
+
+        /* Mobile responsive styling */
+        @media (max-width: 600px) {
+            .card {
+                padding: 36px 28px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 24px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .btn {
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ==================== MANAGER LOGIN SCREEN ==================== -->
+    <div id="managerLogin" class="card">
+        <h1>Manager's Login</h1>
+        
+        <!-- Message box -->
+        <div id="messageBox" class="message"></div>
+        
+        <!-- Login form -->
+        <form id="managerLoginForm">
+            
+            <!-- Username input -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    class="input-field" 
+                    placeholder="Username"
+                    required
+                >
+            </div>
+
+            <!-- Password input -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-wrapper">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="input-field" 
+                        placeholder="Password"
+                        required
+                    >
+                    <button type="button" class="toggle-password" onclick="togglePassword()">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Name input -->
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    class="input-field" 
+                    placeholder="Name"
+                    required
+                >
+            </div>
+
+            <!-- Button group -->
+            <div class="button-group">
+                <button type="submit" class="btn btn-login" id="loginButton">Login</button>
+                <button type="button" class="btn btn-signup" onclick="goToSignup()">Signup</button>
+                <button type="button" class="btn btn-back" onclick="goBack()">Back</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ==================== MANAGER DASHBOARD ==================== -->
+    <div id="managerDashboard" class="card hidden">
+        <h3>Manager Dashboard</h3>
+        
+        <p class="welcome-text">Welcome, <strong id="managerName"></strong>!</p>
+
+        <!-- Option 1: Manage Waiters -->
+        <div class="option-card" onclick="goToWaiterManagement()">
+            <h4>👥 Add/Delete Waiter Details</h4>
+            <p>Manage waiter accounts, add new waiters, or remove existing ones</p>
+        </div>
+
+        <!-- Option 2: Manage Seats -->
+        <div class="option-card" onclick="goToSeatsManagement()">
+            <h4>🪑 Seats in Restaurant</h4>
+            <p>Configure the number of tables and seating arrangements</p>
+        </div>
+
+        <!-- Option 3: Manage Menu -->
+        <div class="option-card" onclick="goToMenuManagement()">
+            <h4>🍽️ Add/Modify Menu</h4>
+            <p>Update menu items, add new dishes, or modify prices</p>
+        </div>
+
+        <!-- Logout button -->
+        <div class="button-group">
+            <button class="btn back" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ===== GOOGLE SHEETS CONFIGURATION =====
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxJ-9Dz7HVFUEUMS2kK35Nc7Q41FLwfeL1pYww-5bvwfqYcT5FdUfEIOmPcC3KtdRAz/exec';
+
+        // ===== UTILITY FUNCTIONS =====
+        
+        function show(screenId) {
+            document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
+            document.getElementById(screenId).classList.remove("hidden");
+        }
+
+        function showMessage(message, type) {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.innerHTML = message;
+            messageBox.className = 'message ' + type;
+            messageBox.style.display = 'block';
+            
+            if (type !== 'info') {
+                setTimeout(() => {
+                    messageBox.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleButton = document.querySelector('.toggle-password');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleButton.textContent = '👁️‍🗨️';
+            } else {
+                passwordField.type = 'password';
+                toggleButton.textContent = '👁️';
+            }
+        }
+
+        function goToSignup() {
+            window.location.href = 'manager-signup.html';
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            show('managerLogin');
+            document.getElementById('managerLoginForm').reset();
+            showMessage('Logged out successfully', 'success');
+        }
+
+        // ===== NAVIGATION TO MANAGEMENT PAGES =====
+        
+        function goToWaiterManagement() {
+            // TODO: Create waiter-management.html page
+            window.location.href = 'waiter-management.html';
+        }
+
+        function goToSeatsManagement() {
+            // TODO: Create seats-management.html page
+            window.location.href = 'seats-management.html';
+        }
+
+        function goToMenuManagement() {
+            // TODO: Create menu-management.html page
+            window.location.href = 'menu-management.html';
+        }
+
+        // ===== MANAGER LOGIN AUTHENTICATION =====
+        
+        document.getElementById('managerLoginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value.trim();
+            
+            // Disable login button and show loading
+            const loginButton = document.getElementById('loginButton');
+            loginButton.disabled = true;
+            showMessage('<span class="spinner"></span>Authenticating...', 'info');
+            
+            try {
+                // Call Google Sheets API for authentication
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=managerLogin&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&name=${encodeURIComponent(name)}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Authentication successful
+                    showMessage('Login successful! Welcome, ' + name, 'success');
+                    
+                    // Store manager info in sessionStorage
+                    sessionStorage.setItem('managerUsername', username);
+                    sessionStorage.setItem('managerName', name);
+                    sessionStorage.setItem('userType', 'manager');
+                    sessionStorage.setItem('restaurantCode', result.restaurantCode);
+                    
+                    // Show dashboard after 1 second
+                    setTimeout(() => {
+                        document.getElementById('managerName').textContent = name;
+                        show('managerDashboard');
+                    }, 1000);
+                    
+                } else {
+                    // Authentication failed
+                    showMessage('❌ Incorrect username, password, or name. Please try again.', 'error');
+                    loginButton.disabled = false;
+                }
+                
+            } catch (error) {
+                console.error('Authentication error:', error);
+                showMessage('Failed to connect to server. Please check your internet connection.', 'error');
+                loginButton.disabled = false;
+            }
+        });
+
+        // ===== CHECK IF ALREADY LOGGED IN =====
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            const managerName = sessionStorage.getItem('managerName');
+            const userType = sessionStorage.getItem('userType');
+            
+            if (managerName && userType === 'manager') {
+                // Already logged in, show dashboard
+                document.getElementById('managerName').textContent = managerName;
+                show('managerDashboard');
+            }
+        });
+    </script>
+</body>
+</html>
