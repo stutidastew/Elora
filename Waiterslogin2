@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elora Restaurant App</title>
+    
+    <style>
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* ===== CARD CONTAINER ===== */
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ===== HEADINGS ===== */
+        h1, h3 {
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        h3 {
+            font-size: 24px;
+        }
+
+        /* ===== FORM ELEMENTS ===== */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="email"],
+        input[type="password"],
+        select,
+        .select-field {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            background-color: white;
+            margin-bottom: 12px;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #7c3aed;
+        }
+
+        input:disabled,
+        select:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .personName {
+            margin-bottom: 8px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            width: 100%;
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Button color variants */
+        .btn-login,
+        .btn.primary {
+            background: #ff7b7b;
+            color: white;
+        }
+
+        .btn-login:hover,
+        .btn.primary:hover {
+            background: #ff6464;
+            box-shadow: 0 4px 12px rgba(255, 123, 123, 0.4);
+        }
+
+        .btn-back,
+        .btn.back {
+            background: #374151;
+            color: white;
+        }
+
+        .btn-back:hover,
+        .btn.back:hover {
+            background: #1f2937;
+        }
+
+        .btn.white {
+            background: #f3f4f6;
+            color: #1a1a1a;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn.white:hover {
+            background: #e5e7eb;
+        }
+
+        /* ===== MESSAGES ===== */
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+            display: block;
+        }
+
+        .message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            display: block;
+        }
+
+        .message.info {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+            display: block;
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f4f6;
+            border-top: 2px solid #7c3aed;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ===== TABLE BUTTONS GRID ===== */
+        #tableButtons {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        /* ===== MENU AREA ===== */
+        #menuArea {
+            margin-top: 24px;
+            margin-bottom: 24px;
+        }
+
+        #menuArea .btn {
+            margin-bottom: 8px;
+        }
+
+        /* ===== BILLING OUTPUT ===== */
+        #billingArea {
+            margin-bottom: 24px;
+        }
+
+        #billOutput {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.8;
+        }
+
+        #billOutput hr {
+            border: none;
+            border-top: 1px dashed #d1d5db;
+            margin: 12px 0;
+        }
+
+        /* ===== MENU LIST (Manager) ===== */
+        #menuList {
+            background: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        #menuList p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        #menuList p:last-child {
+            border-bottom: none;
+        }
+
+        #menuList button {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        #menuList button:hover {
+            background: #dc2626;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .card {
+                padding: 36px 28px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            h3 {
+                font-size: 20px;
+            }
+
+            .btn {
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+
+            #tableButtons {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+        }
+
+        /* ===== UTILITY ===== */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ==================== WAITER LOGIN SCREEN ==================== -->
+    <div id="waiterLogin" class="card">
+        <h1>Waiter Login</h1>
+        
+        <div id="messageBox" class="message"></div>
+        
+        <form id="waiterLoginForm">
+            <div class="form-group">
+                <label for="restaurantCode">Restaurant Code</label>
+                <select id="restaurantCode" class="select-field" required>
+                    <option value="">Select Restaurant Code</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="waiterName">Waiter Name</label>
+                <select id="waiterName" class="select-field" required disabled>
+                    <option value="">First select a restaurant code</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-login" id="loginButton" disabled>Login</button>
+                <button type="button" class="btn btn-back" onclick="goBack()">Back</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ==================== TABLES SCREEN ==================== -->
+    <div id="tablesScreen" class="card hidden">
+        <h3>Select Table</h3>
+        <p class="mb-20">Logged in as: <strong id="loggedWaiter"></strong></p>
+        <div id="tableButtons"></div>
+        <button class="btn back" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- ==================== ORDER SCREEN ==================== -->
+    <div id="orderScreen" class="card hidden">
+        <h3>Order - Table <span id="currentTableDisplay"></span></h3>
+
+        <label>Group Type</label>
+        <select id="groupType">
+            <option>Family</option>
+            <option>Friends</option>
+            <option>Other</option>
+        </select>
+
+        <button class="btn primary" onclick="continueBilling()">Continue</button>
+
+        <div id="billingArea"></div>
+        <div id="menuArea"></div>
+
+        <button class="btn back" onclick="show('tablesScreen')">Back to Tables</button>
+    </div>
+
+    <!-- ==================== FINAL BILL SCREEN ==================== -->
+    <div id="billScreen" class="card hidden">
+        <h3>Final Bill</h3>
+        <div id="billOutput"></div>
+        <button class="btn primary" onclick="printBill()">Export / Print</button>
+        <button class="btn back" onclick="show('tablesScreen')">Done</button>
+    </div>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+        // ===== CONFIGURATION =====
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxJ-9Dz7HVFUEUMS2kK35Nc7Q41FLwfeL1pYww-5bvwfqYcT5FdUfEIOmPcC3KtdRAz/exec';
+        
+        // ===== GLOBAL VARIABLES =====
+        let restaurantData = [];
+        let currentTable = null;
+        let order = [];
+        let splitData = [];
+        let restaurantInfo = null;
+
+        // ===== UTILITY FUNCTIONS =====
+        
+        function show(screenId) {
+            document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
+            document.getElementById(screenId).classList.remove("hidden");
+        }
+
+        function showMessage(message, type) {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.innerHTML = message;
+            messageBox.className = 'message ' + type;
+            messageBox.style.display = 'block';
+            
+            if (type !== 'info') {
+                setTimeout(() => {
+                    messageBox.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        function logout() {
+            sessionStorage.clear();
+            show('waiterLogin');
+            document.getElementById('restaurantCode').value = '';
+            document.getElementById('waiterName').value = '';
+            document.getElementById('waiterName').disabled = true;
+            document.getElementById('loginButton').disabled = true;
+        }
+
+        // ===== LOAD DATA FROM GOOGLE SHEETS =====
+        
+        async function loadRestaurantData() {
+            try {
+                showMessage('<span class="spinner"></span>Loading restaurant data...', 'info');
+                
+                const response = await fetch(`${GOOGLE_SCRIPT_URL}?action=getWaiters`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    restaurantData = result.data;
+                    populateRestaurantCodes();
+                    document.getElementById('messageBox').style.display = 'none';
+                } else {
+                    showMessage('Error loading data: ' + result.message, 'error');
+                }
+                
+            } catch (error) {
+                console.error('Error loading restaurant data:', error);
+                showMessage('Failed to connect to database. Please refresh the page.', 'error');
+            }
+        }
+
+        // ===== POPULATE DROPDOWNS =====
+        
+        function populateRestaurantCodes() {
+            const restaurantSelect = document.getElementById('restaurantCode');
+            const uniqueCodes = [...new Set(restaurantData.map(item => item.restaurantCode))];
+            
+            restaurantSelect.innerHTML = '<option value="">Select Restaurant Code</option>';
+            
+            uniqueCodes.forEach(code => {
+                const option = document.createElement('option');
+                option.value = code;
+                option.textContent = code;
+                restaurantSelect.appendChild(option);
+            });
+        }
+
+        function populateWaiters(restaurantCode) {
+            const waiterSelect = document.getElementById('waiterName');
+            const loginButton = document.getElementById('loginButton');
+            
+            waiterSelect.innerHTML = '<option value="">Select Waiter Name</option>';
+            
+            if (!restaurantCode) {
+                waiterSelect.disabled = true;
+                loginButton.disabled = true;
+                return;
+            }
+            
+            const waiters = restaurantData.filter(item => item.restaurantCode === restaurantCode);
+            
+            waiters.forEach(waiter => {
+                const option = document.createElement('option');
+                option.value = waiter.waiterName;
+                option.textContent = waiter.waiterName;
+                waiterSelect.appendChild(option);
+            });
+            
+            waiterSelect.disabled = false;
+        }
+
+        // ===== EVENT LISTENERS FOR LOGIN =====
+        
+        document.getElementById('restaurantCode').addEventListener('change', function() {
+            const selectedCode = this.value;
+            populateWaiters(selectedCode);
+            document.getElementById('loginButton').disabled = true;
+        });
+
+        document.getElementById('waiterName').addEventListener('change', function() {
+            const loginButton = document.getElementById('loginButton');
+            
+            if (this.value && document.getElementById('restaurantCode').value) {
+                loginButton.disabled = false;
+            } else {
+                loginButton.disabled = true;
+            }
+        });
+
+        document.getElementById('waiterLoginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const restaurantCode = document.getElementById('restaurantCode').value;
+            const waiterName = document.getElementById('waiterName').value;
+            
+            // Get restaurant name from the data
+            const selectedRestaurant = restaurantData.find(item => item.restaurantCode === restaurantCode);
+            const restaurantName = selectedRestaurant ? selectedRestaurant.restaurantName : '';
+            
+            console.log('Waiter login:', {
+                restaurantCode: restaurantCode,
+                restaurantName: restaurantName,
+                waiterName: waiterName,
+                timestamp: new Date().toISOString()
+            });
+            
+            showMessage('Login successful! Welcome, ' + waiterName, 'success');
+            
+            // Store login info
+            sessionStorage.setItem('restaurantCode', restaurantCode);
+            sessionStorage.setItem('restaurantName', restaurantName);
+            sessionStorage.setItem('waiterName', waiterName);
+            sessionStorage.setItem('userType', 'waiter');
+            
+            // Initialize restaurant info (you can load this from another sheet or hardcode for now)
+            restaurantInfo = {
+                name: restaurantName,
+                code: restaurantCode,
+                tables: 10, // Default number of tables - you can make this dynamic
+                menu: [
+                    // Sample menu - replace with data from Google Sheets if needed
+                    {name: 'Butter Chicken', price: 350},
+                    {name: 'Paneer Tikka', price: 280},
+                    {name: 'Biryani', price: 320},
+                    {name: 'Naan', price: 40},
+                    {name: 'Dal Makhani', price: 220},
+                    {name: 'Tandoori Roti', price: 30},
+                    {name: 'Gulab Jamun', price: 80},
+                    {name: 'Lassi', price: 60}
+                ]
+            };
+            
+            // Show tables screen
+            setTimeout(() => {
+                setupTablesScreen();
+            }, 1500);
+        });
+
+        // ===== TABLES SCREEN =====
+        
+        function setupTablesScreen() {
+            show('tablesScreen');
+            
+            // Display logged in waiter
+            document.getElementById('loggedWaiter').textContent = sessionStorage.getItem('waiterName');
+            
+            // Generate table buttons
+            const tableButtons = document.getElementById('tableButtons');
+            tableButtons.innerHTML = '';
+            
+            for (let i = 1; i <= restaurantInfo.tables; i++) {
+                tableButtons.innerHTML += `
+                    <button class="btn white" onclick="openTable(${i})">
+                        Table ${i}
+                    </button>`;
+            }
+        }
+
+        // ===== ORDER MANAGEMENT =====
+        
+        function openTable(tableNum) {
+            currentTable = tableNum;
+            order = [];
+            splitData = [];
+            
+            document.getElementById('currentTableDisplay').textContent = tableNum;
+            document.getElementById('groupType').value = 'Family';
+            document.getElementById('billingArea').innerHTML = '';
+            document.getElementById('menuArea').innerHTML = '';
+            
+            show('orderScreen');
+        }
+
+        function continueBilling() {
+            const billingArea = document.getElementById('billingArea');
+            const menuArea = document.getElementById('menuArea');
+            const type = document.getElementById('groupType').value;
+
+            billingArea.innerHTML = '';
+            menuArea.innerHTML = '';
+
+            if (type === 'Family') {
+                buildSingleMenu();
+            } else {
+                billingArea.innerHTML = `
+                    <label>Number of People</label>
+                    <input id="numPeople" type="number" min="1" value="2">
+                    <button class="btn primary" onclick="setupSplit()">Continue</button>
+                `;
+            }
+        }
+
+        function setupSplit() {
+            const n = parseInt(document.getElementById('numPeople').value);
+            const billingArea = document.getElementById('billingArea');
+            
+            if (!n || n < 1) {
+                alert('Please enter a valid number of people');
+                return;
+            }
+
+            billingArea.innerHTML = '<label>Enter Names</label>';
+
+            for (let i = 0; i < n; i++) {
+                billingArea.innerHTML += `
+                    <input class="personName" placeholder="Person ${i + 1}" value="Person ${i + 1}">
+                `;
+            }
+
+            billingArea.innerHTML += `
+                <button class="btn primary" onclick="buildSplitMenu()">Continue</button>
+            `;
+        }
+
+        function buildSingleMenu() {
+            const menuArea = document.getElementById('menuArea');
+            menuArea.innerHTML = '<h4>Select Items</h4>';
+
+            restaurantInfo.menu.forEach(m => {
+                menuArea.innerHTML += `
+                    <button class="btn white" onclick="addItem('${m.name}', ${m.price})">
+                        ${m.name} - ₹${m.price}
+                    </button>`;
+            });
+
+            menuArea.innerHTML += `
+                <div class="mt-20">
+                    <button class="btn primary" onclick="finalBill()">Generate Bill</button>
+                </div>
+            `;
+        }
+
+        function buildSplitMenu() {
+            const names = [...document.querySelectorAll(".personName")].map(x => x.value.trim()).filter(x => x);
+            
+            if (names.length === 0) {
+                alert('Please enter at least one name');
+                return;
+            }
+            
+            splitData = names.map(n => ({name: n, total: 0}));
+
+            const menuArea = document.getElementById('menuArea');
+            menuArea.innerHTML = `
+                <label>Select person and add their items</label>
+                <select id="personSelect">
+                    ${names.map(n => `<option>${n}</option>`).join('')}
+                </select>
+            `;
+
+            restaurantInfo.menu.forEach(m => {
+                menuArea.innerHTML += `
+                    <button class="btn white" onclick="addSplitItem('${m.name}', ${m.price})">
+                        ${m.name} - ₹${m.price}
+                    </button>`;
+            });
+
+            menuArea.innerHTML += `
+                <div class="mt-20">
+                    <button class="btn primary" onclick="finalBill()">Generate Bill</button>
+                </div>
+            `;
+        }
+
+        function addItem(name, price) {
+            order.push({item: name, price: price});
+            alert(`Added: ${name} - ₹${price}`);
+        }
+
+        function addSplitItem(name, price) {
+            const person = document.getElementById('personSelect').value;
+            order.push({person: person, item: name, price: price});
+            
+            const obj = splitData.find(x => x.name === person);
+            obj.total += price;
+            
+            alert(`Added ${name} for ${person}`);
+        }
+
+        // ===== FINAL BILL =====
+        
+        function finalBill() {
+            if (order.length === 0) {
+                alert('No items added to the order');
+                return;
+            }
+
+            show('billScreen');
+
+            const restaurantName = sessionStorage.getItem('restaurantName');
+            const waiterName = sessionStorage.getItem('waiterName');
+            const now = new Date();
+
+            let html = `
+                <strong>${restaurantName}</strong><br>
+                Table: ${currentTable}<br>
+                Waiter: ${waiterName}<br>
+                Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}<br>
+                <hr>
+            `;
+
+            let total = 0;
+
+            if (splitData.length === 0) {
+                // Single bill
+                order.forEach(o => {
+                    html += `${o.item} <span style="float:right">₹${o.price}</span><br>`;
+                    total += o.price;
+                });
+            } else {
+                // Split bill
+                splitData.forEach(person => {
+                    html += `<strong>${person.name}:</strong><br>`;
+                    const personOrders = order.filter(o => o.person === person.name);
+                    personOrders.forEach(o => {
+                        html += `&nbsp;&nbsp;${o.item} <span style="float:right">₹${o.price}</span><br>`;
+                    });
+                    html += `<em>Subtotal: ₹${person.total}</em><br><br>`;
+                    total += person.total;
+                });
+            }
+
+            html += `<hr><strong>TOTAL: ₹${total}</strong>`;
+
+            if (splitData.length > 0) {
+                html += '<hr><strong>Split Summary:</strong><br>';
+                splitData.forEach(s => {
+                    html += `${s.name}: ₹${s.total}<br>`;
+                });
+            }
+
+            document.getElementById('billOutput').innerHTML = html;
+        }
+
+        function printBill() {
+            window.print();
+        }
+
+        // ===== INITIALIZE ON PAGE LOAD =====
+        
+        window.addEventListener('DOMContentLoaded', function() {
+            // Check if already logged in
+            const waiterName = sessionStorage.getItem('waiterName');
+            const restaurantCode = sessionStorage.getItem('restaurantCode');
+            
+            if (waiterName && restaurantCode) {
+                // User is already logged in, skip to tables
+                restaurantInfo = {
+                    name: sessionStorage.getItem('restaurantName'),
+                    code: restaurantCode,
+                    tables: 10,
+                    menu: [
+                        {name: 'Butter Chicken', price: 350},
+                        {name: 'Paneer Tikka', price: 280},
+                        {name: 'Biryani', price: 320},
+                        {name: 'Naan', price: 40},
+                        {name: 'Dal Makhani', price: 220},
+                        {name: 'Tandoori Roti', price: 30},
+                        {name: 'Gulab Jamun', price: 80},
+                        {name: 'Lassi', price: 60}
+                    ]
+                };
+                setupTablesScreen();
+            } else {
+                // Show login screen and load data
+                loadRestaurantData();
+            }
+        });
+    </script>
+</body>
+</html>
