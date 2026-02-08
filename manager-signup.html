@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- This tells the browser what language the page is in -->
+    <meta charset="UTF-8">
+    <!-- This makes the page look good on mobile phones -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is the text that appears in the browser tab -->
+    <title>Manager Signup - Elora</title>
+    
+    <!-- ===== STYLING SECTION (CSS) - This controls how everything looks ===== -->
+    <style>
+        /* Reset default browser styling - makes sure the page looks the same in all browsers */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* BODY STYLING - The purple background you see on the whole page */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            /* Same purple gradient background as homepage */
+            background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+            /* Makes the page at least as tall as the screen */
+            min-height: 100vh;
+            /* Centers the white box in the middle of the screen */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* WHITE CONTAINER BOX - The rounded white card in the center */
+        .container {
+            background: white;
+            /* Makes the corners rounded */
+            border-radius: 24px;
+            /* Space inside the box */
+            padding: 48px 40px;
+            /* Shadow effect around the box to make it pop */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            /* Maximum width of the box */
+            max-width: 520px;
+            width: 100%;
+        }
+
+        /* HEADING STYLING - "Manager Signup" text */
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            /* Space below the heading */
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        /* FORM GROUP - Container for each input field (label + input box) */
+        .form-group {
+            /* Space below each form group */
+            margin-bottom: 24px;
+        }
+
+        /* LABEL STYLING - The text above each input box */
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            /* Space below the label */
+            margin-bottom: 8px;
+        }
+
+        /* INPUT BOX STYLING - The boxes where users type their information */
+        .input-field {
+            width: 100%;
+            /* Space inside the input box */
+            padding: 14px 16px;
+            font-size: 15px;
+            /* Light gray border around the input */
+            border: 1px solid #d1d5db;
+            /* Rounded corners */
+            border-radius: 8px;
+            /* Smooth animation when clicking on input */
+            transition: border-color 0.3s ease;
+            /* Ensures text doesn't look too bold */
+            font-weight: 400;
+        }
+
+        /* INPUT BOX FOCUS EFFECT - When you click inside an input box */
+        .input-field:focus {
+            /* Removes default browser outline */
+            outline: none;
+            /* Changes border to purple when active */
+            border-color: #7c3aed;
+        }
+
+        /* INPUT BOX PLACEHOLDER TEXT - The light gray text inside empty inputs */
+        .input-field::placeholder {
+            color: #9ca3af;
+        }
+
+        /* PASSWORD INPUT WRAPPER - Special container for password field with eye icon */
+        .password-wrapper {
+            position: relative;
+        }
+
+        /* EYE ICON BUTTON - The button to show/hide password */
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #6b7280;
+            font-size: 18px;
+        }
+
+        .toggle-password:hover {
+            color: #374151;
+        }
+
+        /* BUTTON GROUP - Container for all buttons */
+        .button-group {
+            /* Space above the button group */
+            margin-top: 32px;
+            /* Stacks buttons vertically */
+            display: flex;
+            flex-direction: column;
+            /* Space between buttons */
+            gap: 12px;
+        }
+
+        /* COMMON BUTTON STYLING - Applied to all buttons */
+        .btn {
+            width: 100%;
+            /* Space inside the button */
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            /* Removes default button border */
+            border: none;
+            /* Rounded corners */
+            border-radius: 8px;
+            /* Makes the mouse pointer change to a hand when hovering */
+            cursor: pointer;
+            /* Smooth animation */
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        /* SIGNUP BUTTON - The coral/pink colored main button */
+        .btn-signup {
+            /* Coral/pink background color - same as Manager button on homepage */
+            background: #ff7b7b;
+            color: white;
+        }
+
+        /* SIGNUP BUTTON HOVER EFFECT - When you move mouse over Signup button */
+        .btn-signup:hover {
+            /* Slightly darker coral color */
+            background: #ff6464;
+            /* Moves button up slightly for a "lift" effect */
+            transform: translateY(-2px);
+            /* Adds a glowing shadow effect */
+            box-shadow: 0 4px 12px rgba(255, 123, 123, 0.4);
+        }
+
+        /* LOGIN BUTTON - The light gray button */
+        .btn-login {
+            /* Light gray background */
+            background: #e5e7eb;
+            color: #1a1a1a;
+        }
+
+        /* LOGIN BUTTON HOVER EFFECT */
+        .btn-login:hover {
+            /* Slightly darker gray */
+            background: #d1d5db;
+            /* Moves button up slightly */
+            transform: translateY(-2px);
+        }
+
+        /* BACK BUTTON - The dark gray/black button */
+        .btn-back {
+            /* Dark gray/charcoal background */
+            background: #374151;
+            color: white;
+        }
+
+        /* BACK BUTTON HOVER EFFECT */
+        .btn-back:hover {
+            /* Slightly darker */
+            background: #1f2937;
+            /* Moves button up slightly */
+            transform: translateY(-2px);
+        }
+
+        /* BUTTON CLICK EFFECT - When you click any button */
+        .btn:active {
+            /* Returns button to normal position */
+            transform: translateY(0);
+        }
+
+        /* SUCCESS MESSAGE STYLING - Green message that shows after successful signup */
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none; /* Hidden by default */
+        }
+
+        .message.success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+
+        .message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        /* MOBILE PHONE STYLING - Makes the page look good on smaller screens */
+        @media (max-width: 600px) {
+            .container {
+                /* Less padding on mobile */
+                padding: 36px 28px;
+            }
+
+            h1 {
+                /* Smaller heading on mobile */
+                font-size: 24px;
+                margin-bottom: 24px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .btn {
+                /* Smaller buttons on mobile */
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<!-- ===== VISIBLE CONTENT SECTION - This is what you actually see on the page ===== -->
+<body>
+    <!-- The white rounded box that contains everything -->
+    <div class="container">
+        <!-- Main heading text -->
+        <h1>Manager Signup</h1>
+        
+        <!-- MESSAGE BOX - Shows success or error messages (hidden by default) -->
+        <div id="messageBox" class="message"></div>
+        
+        <!-- FORM - Contains all input fields and buttons -->
+        <form id="managerSignupForm">
+            
+            <!-- NAME INPUT SECTION -->
+            <div class="form-group">
+                <!-- Label for name field -->
+                <label for="name">Name</label>
+                <!-- Name input box -->
+                <input 
+                    type="text" 
+                    id="name" 
+                    class="input-field" 
+                    placeholder="Full Name"
+                    required
+                >
+            </div>
+
+            <!-- USERNAME INPUT SECTION -->
+            <div class="form-group">
+                <!-- Label for username field -->
+                <label for="username">Username</label>
+                <!-- Username input box -->
+                <input 
+                    type="text" 
+                    id="username" 
+                    class="input-field" 
+                    placeholder="Choose a username"
+                    required
+                >
+            </div>
+
+            <!-- EMAIL INPUT SECTION -->
+            <div class="form-group">
+                <!-- Label for email field -->
+                <label for="email">Email</label>
+                <!-- Email input box - type="email" validates email format automatically -->
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="input-field" 
+                    placeholder="your.email@example.com"
+                    required
+                >
+            </div>
+
+            <!-- PASSWORD INPUT SECTION -->
+            <div class="form-group">
+                <!-- Label for password field -->
+                <label for="password">Password</label>
+                <!-- Password wrapper to hold input and eye icon -->
+                <div class="password-wrapper">
+                    <!-- Password input box - type="password" hides the characters -->
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="input-field" 
+                        placeholder="Create a password"
+                        required
+                        minlength="6"
+                    >
+                    <!-- Eye icon button to show/hide password -->
+                    <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <!-- CONFIRM PASSWORD INPUT SECTION -->
+            <div class="form-group">
+                <!-- Label for confirm password field -->
+                <label for="confirmPassword">Confirm Password</label>
+                <!-- Confirm password wrapper -->
+                <div class="password-wrapper">
+                    <!-- Confirm password input box -->
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        class="input-field" 
+                        placeholder="Re-enter your password"
+                        required
+                        minlength="6"
+                    >
+                    <!-- Eye icon button to show/hide confirm password -->
+                    <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <!-- BUTTON SECTION - All three buttons -->
+            <div class="button-group">
+                <!-- SIGNUP BUTTON - Coral/pink button that submits the form -->
+                <button type="submit" class="btn btn-signup">Signup</button>
+                
+                <!-- LOGIN BUTTON - Light gray button to go to login page -->
+                <button type="button" class="btn btn-login" onclick="goToLogin()">Already have an account? Login</button>
+                
+                <!-- BACK BUTTON - Dark button to go back to homepage -->
+                <button type="button" class="btn btn-back" onclick="goBack()">Back</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ===== JAVASCRIPT SECTION - This controls what happens with user interactions ===== -->
+    <script>
+        // ===== GOOGLE SHEETS CONFIGURATION =====
+        // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+        // Get this URL after deploying your Google Apps Script (see SETUP_GUIDE.md)
+        const GOOGLE_SCRIPT_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';
+        
+        // Function to show/hide password when eye icon is clicked
+        // Takes the field ID as a parameter so it works for both password fields
+        function togglePassword(fieldId) {
+            // Gets the password input field by its ID
+            const passwordField = document.getElementById(fieldId);
+            // Gets the eye icon button for this specific field
+            const toggleButton = passwordField.nextElementSibling;
+            
+            // Checks if password is currently hidden
+            if (passwordField.type === 'password') {
+                // Shows the password as regular text
+                passwordField.type = 'text';
+                // Changes icon to indicate password is visible
+                toggleButton.textContent = '👁️‍🗨️';
+            } else {
+                // Hides the password again
+                passwordField.type = 'password';
+                // Changes icon back to normal eye
+                toggleButton.textContent = '👁️';
+            }
+        }
+
+        // Function to display messages to the user
+        function showMessage(message, type) {
+            const messageBox = document.getElementById('messageBox');
+            messageBox.textContent = message;
+            messageBox.className = 'message ' + type; // Adds 'success' or 'error' class
+            messageBox.style.display = 'block';
+            
+            // Automatically hide the message after 5 seconds
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 5000);
+        }
+
+        // Function that runs when Login button is clicked
+        function goToLogin() {
+            // Takes you to the manager login page
+            window.location.href = 'manager.html';
+        }
+
+        // Function that runs when Back button is clicked
+        function goBack() {
+            // Takes you back to the homepage (index.html)
+            window.location.href = 'index.html';
+        }
+
+        // Function to send signup data to Google Sheets
+        async function submitToGoogleSheets(signupData) {
+            try {
+                // Check if Google Script URL is configured
+                if (GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbz4KfRIlzMqau94VT5kgHzwi3IEFyypQX-RBakRG0kPBv9F0I0_jPHjysQAEOFOUZgijQ/exec') {
+                    showMessage('Error: Google Sheets not configured. Please update GOOGLE_SCRIPT_URL in the code.', 'error');
+                    return false;
+                }
+                
+                // Show loading message
+                showMessage('Creating your account...', 'success');
+                
+                // Send data to Google Sheets via Apps Script
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    redirect: 'follow',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    body: JSON.stringify(signupData)
+                });
+                
+                // Read the response
+                const result = await response.json();
+                
+                // Check if signup was successful
+                if (result.success) {
+                    console.log('Success:', result.message);
+                    return true;
+                } else {
+                    console.error('Error from server:', result.message);
+                    showMessage(result.message, 'error');
+                    return false;
+                }
+                
+            } catch (error) {
+                console.error('Error submitting to Google Sheets:', error);
+                showMessage('Error connecting to database. Please try again.', 'error');
+                return false;
+            }
+        }
+
+        // Function that runs when Signup button is clicked (form is submitted)
+        document.getElementById('managerSignupForm').addEventListener('submit', async function(event) {
+            // Prevents the page from refreshing (default form behavior)
+            event.preventDefault();
+            
+            // Gets the values entered by the user
+            const name = document.getElementById('name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // VALIDATION: Check if passwords match
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match! Please try again.', 'error');
+                return; // Stops the function here if passwords don't match
+            }
+            
+            // VALIDATION: Check if password is at least 6 characters
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters long.', 'error');
+                return;
+            }
+            
+            // VALIDATION: Check if username is at least 3 characters
+            if (username.length < 3) {
+                showMessage('Username must be at least 3 characters long.', 'error');
+                return;
+            }
+            
+            // Prepare data to send to Google Sheets
+            const signupData = {
+                name: name,
+                username: username,
+                email: email,
+                password: password
+            };
+            
+            // Log the attempt (for debugging)
+            console.log('Signup attempt with:', {
+                name: name,
+                username: username,
+                email: email,
+                password: '***hidden***'
+            });
+            
+            // Disable the submit button to prevent double submission
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creating Account...';
+            
+            // Submit to Google Sheets
+            const success = await submitToGoogleSheets(signupData);
+            
+            // Re-enable the button
+            submitButton.disabled = false;
+            submitButton.textContent = originalButtonText;
+            
+            if (success) {
+                // Show success message
+                showMessage('Account created successfully! Redirecting to login...', 'success');
+                
+                // After 2 seconds, redirect to login page
+                setTimeout(() => {
+                    window.location.href = 'manager.html';
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

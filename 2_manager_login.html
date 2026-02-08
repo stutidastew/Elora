@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- This tells the browser what language the page is in -->
+    <meta charset="UTF-8">
+    <!-- This makes the page look good on mobile phones -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is the text that appears in the browser tab -->
+    <title>Manager's Login - Elora</title>
+    
+    <!-- ===== STYLING SECTION (CSS) - This controls how everything looks ===== -->
+    <style>
+        /* Reset default browser styling - makes sure the page looks the same in all browsers */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* BODY STYLING - The purple background you see on the whole page */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            /* Same purple gradient background as homepage */
+            background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+            /* Makes the page at least as tall as the screen */
+            min-height: 100vh;
+            /* Centers the white box in the middle of the screen */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* WHITE CONTAINER BOX - The rounded white card in the center */
+        .container {
+            background: white;
+            /* Makes the corners rounded */
+            border-radius: 24px;
+            /* Space inside the box */
+            padding: 48px 40px;
+            /* Shadow effect around the box to make it pop */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            /* Maximum width of the box */
+            max-width: 520px;
+            width: 100%;
+        }
+
+        /* HEADING STYLING - "Manager's Login" text */
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            /* Space below the heading */
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        /* FORM GROUP - Container for each input field (label + input box) */
+        .form-group {
+            /* Space below each form group */
+            margin-bottom: 24px;
+        }
+
+        /* LABEL STYLING - The text above each input box (Email, Password, Name) */
+        label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            /* Space below the label */
+            margin-bottom: 8px;
+        }
+
+        /* INPUT BOX STYLING - The boxes where users type their information */
+        .input-field {
+            width: 100%;
+            /* Space inside the input box */
+            padding: 14px 16px;
+            font-size: 15px;
+            /* Light gray border around the input */
+            border: 1px solid #d1d5db;
+            /* Rounded corners */
+            border-radius: 8px;
+            /* Smooth animation when clicking on input */
+            transition: border-color 0.3s ease;
+            /* Ensures text doesn't look too bold */
+            font-weight: 400;
+        }
+
+        /* INPUT BOX FOCUS EFFECT - When you click inside an input box */
+        .input-field:focus {
+            /* Removes default browser outline */
+            outline: none;
+            /* Changes border to purple when active */
+            border-color: #7c3aed;
+        }
+
+        /* INPUT BOX PLACEHOLDER TEXT - The light gray text inside empty inputs */
+        .input-field::placeholder {
+            color: #9ca3af;
+        }
+
+        /* PASSWORD INPUT WRAPPER - Special container for password field with eye icon */
+        .password-wrapper {
+            position: relative;
+        }
+
+        /* EYE ICON BUTTON - The button to show/hide password */
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #6b7280;
+            font-size: 18px;
+        }
+
+        .toggle-password:hover {
+            color: #374151;
+        }
+
+        /* BUTTON GROUP - Container for all buttons */
+        .button-group {
+            /* Space above the button group */
+            margin-top: 32px;
+            /* Stacks buttons vertically */
+            display: flex;
+            flex-direction: column;
+            /* Space between buttons */
+            gap: 12px;
+        }
+
+        /* COMMON BUTTON STYLING - Applied to all buttons */
+        .btn {
+            width: 100%;
+            /* Space inside the button */
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            /* Removes default button border */
+            border: none;
+            /* Rounded corners */
+            border-radius: 8px;
+            /* Makes the mouse pointer change to a hand when hovering */
+            cursor: pointer;
+            /* Smooth animation */
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        /* LOGIN BUTTON - The coral/pink colored main button */
+        .btn-login {
+            /* Coral/pink background color - same as Manager button on homepage */
+            background: #ff7b7b;
+            color: white;
+        }
+
+        /* LOGIN BUTTON HOVER EFFECT - When you move mouse over Login button */
+        .btn-login:hover {
+            /* Slightly darker coral color */
+            background: #ff6464;
+            /* Moves button up slightly for a "lift" effect */
+            transform: translateY(-2px);
+            /* Adds a glowing shadow effect */
+            box-shadow: 0 4px 12px rgba(255, 123, 123, 0.4);
+        }
+
+        /* SIGNUP BUTTON - The light gray button */
+        .btn-signup {
+            /* Light gray background */
+            background: #e5e7eb;
+            color: #1a1a1a;
+        }
+
+        /* SIGNUP BUTTON HOVER EFFECT */
+        .btn-signup:hover {
+            /* Slightly darker gray */
+            background: #d1d5db;
+            /* Moves button up slightly */
+            transform: translateY(-2px);
+        }
+
+        /* BACK BUTTON - The dark gray/black button */
+        .btn-back {
+            /* Dark gray/charcoal background */
+            background: #374151;
+            color: white;
+        }
+
+        /* BACK BUTTON HOVER EFFECT */
+        .btn-back:hover {
+            /* Slightly darker */
+            background: #1f2937;
+            /* Moves button up slightly */
+            transform: translateY(-2px);
+        }
+
+        /* BUTTON CLICK EFFECT - When you click any button */
+        .btn:active {
+            /* Returns button to normal position */
+            transform: translateY(0);
+        }
+
+        /* MOBILE PHONE STYLING - Makes the page look good on smaller screens */
+        @media (max-width: 600px) {
+            .container {
+                /* Less padding on mobile */
+                padding: 36px 28px;
+            }
+
+            h1 {
+                /* Smaller heading on mobile */
+                font-size: 24px;
+                margin-bottom: 24px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .btn {
+                /* Smaller buttons on mobile */
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<!-- ===== VISIBLE CONTENT SECTION - This is what you actually see on the page ===== -->
+<body>
+    <!-- The white rounded box that contains everything -->
+    <div class="container">
+        <!-- Main heading text -->
+        <h1>Manager's Login</h1>
+        
+        <!-- FORM - Contains all input fields and buttons -->
+        <form id="managerLoginForm">
+            
+            <!-- USERNAME INPUT SECTION -->
+            <div class="form-group">
+                <!-- Label for username field -->
+                <label for="username">Username</label>
+                <!-- Username input box -->
+                <input 
+                    type="text" 
+                    id="username" 
+                    class="input-field" 
+                    placeholder="Username"
+                    required
+                >
+            </div>
+
+            <!-- PASSWORD INPUT SECTION -->
+            <div class="form-group">
+                <!-- Label for password field -->
+                <label for="password">Password</label>
+                <!-- Password wrapper to hold input and eye icon -->
+                <div class="password-wrapper">
+                    <!-- Password input box - type="password" hides the characters -->
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="input-field" 
+                        placeholder="Password"
+                        required
+                    >
+                    <!-- Eye icon button to show/hide password -->
+                    <button type="button" class="toggle-password" onclick="togglePassword()">
+                        👁️
+                    </button>
+                </div>
+            </div>
+
+            <!-- NAME INPUT SECTION -->
+            <div class="form-group">
+                <!-- Label for name field -->
+                <label for="name">Name</label>
+                <!-- Name input box -->
+                <input 
+                    type="text" 
+                    id="name" 
+                    class="input-field" 
+                    placeholder="Name"
+                    required
+                >
+            </div>
+
+            <!-- BUTTON SECTION - All three buttons -->
+            <div class="button-group">
+                <!-- LOGIN BUTTON - Coral/pink button that submits the form -->
+                <button type="submit" class="btn btn-login">Login</button>
+                
+                <!-- SIGNUP BUTTON - Light gray button to go to signup page -->
+                <button type="button" class="btn btn-signup" onclick="goToSignup()">Signup</button>
+                
+                <!-- BACK BUTTON - Dark button to go back to homepage -->
+                <button type="button" class="btn btn-back" onclick="goBack()">Back</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- ===== JAVASCRIPT SECTION - This controls what happens with user interactions ===== -->
+    <script>
+        // Function to show/hide password when eye icon is clicked
+        function togglePassword() {
+            // Gets the password input field
+            const passwordField = document.getElementById('password');
+            // Gets the eye icon button
+            const toggleButton = document.querySelector('.toggle-password');
+            
+            // Checks if password is currently hidden
+            if (passwordField.type === 'password') {
+                // Shows the password as regular text
+                passwordField.type = 'text';
+                // Changes icon to indicate password is visible
+                toggleButton.textContent = '👁️‍🗨️';
+            } else {
+                // Hides the password again
+                passwordField.type = 'password';
+                // Changes icon back to normal eye
+                toggleButton.textContent = '👁️';
+            }
+        }
+
+        // Function that runs when Signup button is clicked
+        function goToSignup() {
+            // IMPORTANT: Change 'manager-signup.html' to your actual signup page filename
+            window.location.href = '2b_manager-signup.html';
+        }
+
+        // Function that runs when Back button is clicked
+        function goBack() {
+            // Takes you back to the homepage (index.html)
+            window.location.href = '1_Rest_Index.html';
+        }
+
+        // Function that runs when Login button is clicked (form is submitted)
+        document.getElementById('managerLoginForm').addEventListener('submit', function(event) {
+            // Prevents the page from refreshing (default form behavior)
+            event.preventDefault();
+            
+            // Gets the values entered by the user
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const name = document.getElementById('name').value;
+            
+            // TODO: Add your login logic here
+            // This is where you would check the username/password against your Google Sheet
+            // For now, this just shows an alert with the entered information
+            
+            console.log('Login attempt with:', {
+                username: username,
+                password: password,
+                name: name
+            });
+            
+            // Example: After successful login, go to manager dashboard
+            // window.location.href = 'manager-dashboard.html';
+            
+            // For now, just show a message
+            alert('Login functionality will be connected to Google Sheets in the next step!');
+        });
+    </script>
+</body>
+</html>

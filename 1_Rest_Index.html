@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- This tells the browser what language the page is in -->
+    <meta charset="UTF-8">
+    <!-- This makes the page look good on mobile phones -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is the text that appears in the browser tab -->
+    <title>Welcome to Elora</title>
+    
+    <!-- ===== STYLING SECTION (CSS) - This controls how everything looks ===== -->
+    <style>
+        /* Reset default browser styling - makes sure the page looks the same in all browsers */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* BODY STYLING - The purple background you see on the whole page */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            /* Purple gradient background - from darker purple to lighter purple */
+            background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+            /* Makes the page at least as tall as the screen */
+            min-height: 100vh;
+            /* Centers the white box in the middle of the screen */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* WHITE CONTAINER BOX - The rounded white card in the center */
+        .container {
+            background: white;
+            /* Makes the corners rounded */
+            border-radius: 24px;
+            /* Space inside the box (top/bottom: 60px, left/right: 50px) */
+            padding: 60px 50px;
+            /* Shadow effect around the box to make it pop */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            /* Maximum width of the box */
+            max-width: 500px;
+            width: 100%;
+        }
+
+        /* HEADING STYLING - "Welcome to Elora" text */
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1a1a1a;
+            /* Space below the heading */
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        /* BUTTON GROUP - Container that holds both buttons */
+        .button-group {
+            /* Stacks buttons vertically */
+            display: flex;
+            flex-direction: column;
+            /* Space between the two buttons */
+            gap: 16px;
+        }
+
+        /* COMMON BUTTON STYLING - Applied to both Manager and Waiter buttons */
+        .role-button {
+            /* Space inside the button */
+            padding: 18px 32px;
+            font-size: 18px;
+            font-weight: 500;
+            /* Removes default button border */
+            border: none;
+            /* Rounded corners on buttons */
+            border-radius: 12px;
+            /* Makes the mouse pointer change to a hand when hovering */
+            cursor: pointer;
+            /* Smooth animation when hovering */
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        /* MANAGER BUTTON - The coral/pink colored button */
+        .manager-button {
+            /* Coral/pink background color */
+            background: #ff7b7b;
+            color: white;
+        }
+
+        /* MANAGER BUTTON HOVER EFFECT - When you move mouse over Manager button */
+        .manager-button:hover {
+            /* Slightly darker coral color */
+            background: #ff6464;
+            /* Moves button up slightly */
+            transform: translateY(-2px);
+            /* Adds a glowing shadow effect */
+            box-shadow: 0 8px 20px rgba(255, 123, 123, 0.4);
+        }
+
+        /* WAITER BUTTON - The light gray button */
+        .waiter-button {
+            /* Light gray background */
+            background: #e5e5e5;
+            /* Dark text color */
+            color: #1a1a1a;
+        }
+
+        /* WAITER BUTTON HOVER EFFECT - When you move mouse over Waiter button */
+        .waiter-button:hover {
+            /* Slightly darker gray */
+            background: #d4d4d4;
+            /* Moves button up slightly */
+            transform: translateY(-2px);
+            /* Adds a shadow effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* BUTTON CLICK EFFECT - When you click any button */
+        .role-button:active {
+            /* Returns button to normal position */
+            transform: translateY(0);
+        }
+
+        /* MOBILE PHONE STYLING - Makes the page look good on smaller screens */
+        @media (max-width: 600px) {
+            .container {
+                /* Less padding on mobile */
+                padding: 40px 30px;
+            }
+
+            h1 {
+                /* Smaller heading on mobile */
+                font-size: 28px;
+                margin-bottom: 30px;
+            }
+
+            .role-button {
+                /* Smaller buttons on mobile */
+                padding: 16px 28px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<!-- ===== VISIBLE CONTENT SECTION - This is what you actually see on the page ===== -->
+<body>
+    <!-- The white rounded box that contains everything -->
+    <div class="container">
+        <!-- Main heading text -->
+        <h1>Welcome to Elora</h1>
+        
+        <!-- Container for both buttons -->
+        <div class="button-group">
+            <!-- Manager button - When clicked, runs the goToManager() function -->
+            <button class="role-button manager-button" onclick="goToManager()">Manager</button>
+            
+            <!-- Waiter button - When clicked, runs the goToWaiter() function -->
+            <button class="role-button waiter-button" onclick="goToWaiter()">Waiter</button>
+        </div>
+    </div>
+
+    <!-- ===== JAVASCRIPT SECTION - This controls what happens when buttons are clicked ===== -->
+    <script>
+        // Function that runs when Manager button is clicked
+        function goToManager() {
+            window.location.href = '2_manager_login.html';
+        }
+
+        // Function that runs when Waiter button is clicked
+        function goToWaiter() {
+            // IMPORTANT: Change 'waiter.html' to whatever you name your waiter page file
+            // This tells the browser to go to the waiter page
+            window.location.href = 'waiter.html';
+        }
+    </script>
+</body>
+</html>
